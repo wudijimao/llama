@@ -21,11 +21,11 @@ def wget(url, file_path):
     else:
         response = requests.get(url, headers=wget_fake_header, stream=True)
         mode = 'wb'
-    total_size = int(response.headers.get('Content-Length', 0))
+    total_size = int(response.headers.get('Content-Length', 0)) + file_size
     block_size = 8192
     wrote = file_size
-    with open(temp_file_path, 'wb') as f:
-        f.seek(0, os.SEEK_END)
+    with open(temp_file_path, 'ab') as f:
+        f.seek(file_size)
         for chunk in response.iter_content(chunk_size=block_size):
             if chunk:
                 f.write(chunk)
